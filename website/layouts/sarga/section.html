@@ -1,16 +1,22 @@
 <!DOCTYPE html>
 <meta charset="utf-8"/>
+<title>Rāmāyaṇa</title>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+
+{{ $prettyNames := (dict "Kanda_1_BK" "Kāṇḍa 1: Bāla-kāṇḍa"    "Kanda_2_AYK" "Kāṇḍa 2: Ayodhyā-kāṇḍa"    "Kanda_3_ARK" "Kāṇḍa 3: Araṇya-kāṇḍa"    "Kanda_4_KSK" "Kāṇḍa 4: Kiṣkindhā-kāṇḍa"    "Kanda_5_SK" "Kāṇḍa 5: Sundara-kāṇḍa"    "Kanda_6_YK" "Kāṇḍa 6: Yuddha-kāṇḍa") }}
 
 {{ $lastKandaNum := newScratch }}
 
 {{ range $fileInfo := (readDir "data/audio_alignment/ramayana/sentence_alignment/") }}
     {{ $kandaNum := replaceRE "^(Kanda_[1-6]_[A-Z]{1,2}K)-.*.json" "$1" $fileInfo.Name }}
     {{ if not (eq $kandaNum $lastKandaNum) }}
-        <h2>{{ $kandaNum }} </h2>
+        <h2>{{ index $prettyNames $kandaNum }} </h2>
         {{ $lastKandaNum = $kandaNum }}
     {{ end }}
-    {{ $sargaName := replaceRE "^Kanda_[1-6]_[A-Z]{1,2}K-([0-9]{3}-.*).json" "$1" $fileInfo.Name }}
+    {{ $sargaName := replaceRE "^Kanda_([1-6])_[A-Z]{1,2}K-([0-9]{3})-(.*).json" "$1.$2: $3" $fileInfo.Name }}
+    {{ $sargaName = replaceRE "(.*)_0" "$1" $sargaName }}
+    {{ $sargaName = replaceRE "(.*)_$" "$1" $sargaName }}
     {{ $sargaNum := replaceRE "^Kanda_([1-6])_[A-Z]{1,2}K-([0-9]{3})-.*.json" "$1.$2" $fileInfo.Name }}
     <a href="{{ $.Site.BaseURL }}/sarga/{{ $sargaNum }}">{{ $sargaName }}</a><br>
 {{end}}
