@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+{{ $lastKandaNum := newScratch }}
+
+{{ range $fileInfo := (readDir "data/audio_alignment/ramayana/sentence_alignment/") }}
+    {{ $kandaNum := replaceRE "^(Kanda_[1-6]_[A-Z]{1,2}K)-.*.json" "$1" $fileInfo.Name }}
+    {{ if not (eq $kandaNum $lastKandaNum) }}
+        <h2>{{ $kandaNum }} </h2>
+        {{ $lastKandaNum = $kandaNum }}
+    {{ end }}
+    {{ $sargaName := replaceRE "^Kanda_[1-6]_[A-Z]{1,2}K-([0-9]{3}-.*).json" "$1" $fileInfo.Name }}
+    {{ $sargaNum := replaceRE "^Kanda_([1-6])_[A-Z]{1,2}K-([0-9]{3})-.*.json" "$1.$2" $fileInfo.Name }}
+    <a href="{{ $.Site.BaseURL }}/sarga/{{ $sargaNum }}">{{ $sargaName }}</a><br>
+{{end}}

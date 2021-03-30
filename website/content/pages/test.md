@@ -1,4 +1,6 @@
 ---
 kind: "page"
-layout: "sarga"
+layout: "sargapage"
+ramayanaalignment: "Kanda_1_BK-001-Samksheparamayanam.json"
+ramayanaaudiourl: "https://archive.org/download/Ramayana-recitation-Sriram-harisItArAmamUrti-Ghanapaati-v2/Kanda_1/Kanda_1_BK-001-Samksheparamayanam.mp3"
 ---

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<style>
+    #text-ramayana {
+        /* rtl (reverted to ltr inside) is a hack to get scrollbar on the left */
+        direction: rtl;
+        line-height: 1.2;
+        max-height: min(80vh, 20em);
+        overflow-y: scroll;
+    }
+    #text-ramayana-inner {
+        direction: ltr;
+        /* Not too close to scrollbar */
+        margin-left: 1em;
+    }
+</style>
+
+<audio controls id="audio-ramayana" src="{{ .Params.ramayanaaudiourl }}">
+</audio>
+
+{{ $alignmentPath := printf "data/audio_alignment/ramayana/sentence_alignment/%#s" $.Params.ramayanaalignment }}
+{{- /* $alignmentPath := replace $alignmentPath " " "%20" */ -}}
+{{- /* warnf "Path for (%v) of kind (%v) is (%#s)" $.Path $.Kind $alignmentPath */ -}}
+
+<div id="text-ramayana"><div id="text-ramayana-inner">    
+{{- $dataJSON := getJSON $alignmentPath -}}
+{{ range $fragment := (index $dataJSON "fragments") }}
+    {{- /* We assume there is just one line */ -}}
+    {{- $line := (index $fragment.lines 0) -}}
+    <p class="line-ramayana" begin="{{$fragment.begin}}">{{$line}}</p>
+{{end}}
+</div></div>
+
+<script src="{{ $.Site.BaseURL }}/align.js">
+</script>
