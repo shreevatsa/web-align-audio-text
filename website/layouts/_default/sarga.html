@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+
+<style>
+    #text-ramayana {
+        direction: rtl;
+        max-width: 100em;
+        line-height: 1.2;
+        max-height: min(80vh, 20em);
+        overflow-y: scroll;
+    }
+    #text-ramayana-inner {
+        direction: ltr;
+        margin-left: 1em;
+    }
+</style>
+
+<audio controls id="audio-ramayana"
+    src="https://archive.org/download/Ramayana-recitation-Sriram-harisItArAmamUrti-Ghanapaati-v2/Kanda_1/Kanda_1_BK-001-Samksheparamayanam.mp3">
+</audio>
+
+<div id="text-ramayana"><div id="text-ramayana-inner">
+{{- $dataJSON := getJSON "data/audio_alignment/ramayana/sentence_alignment/Kanda_1_BK-001-Samksheparamayanam.json" -}}
+{{- warnf "Not-a-warning: There are %#v fragments." (len (index $dataJSON "fragments")) -}}
+{{ range $fragment := (index $dataJSON "fragments") }}
+    {{- /* We assume there is just one line */ -}}
+    {{- $line := (index $fragment.lines 0) -}}
+    <p class="line-ramayana" begin="{{$fragment.begin}}">{{$line}}</p>
+{{end}}
+</div></div>
+
+<script src="/align.js">
+</script>
