@@ -21,13 +21,13 @@ if __name__ == '__main__':
     kanda_path = path[:len('Kanda_')+1]
     kanda_num = kanda_path[-1]
     m = re.match(kanda_path +'_([A-Z]{2,3})-([0-9][0-9][0-9])-.*.json', json_filename)
-    filename = m.group(2)
+    sarga_num = m.group(2)
     url_prefix = 'https://archive.org/download/Ramayana-recitation-Sriram-harisItArAmamUrti-Ghanapaati-v2'
     url = f'{url_prefix}/{kanda_path}/{path}.mp3'
     print(url)
     # resp = requests.head(url, allow_redirects=True)
     # assert resp.status_code == 200 and int(resp.headers['Content-Length']) > 0, resp.headers
-    out_filename = f'content/sarga/{kanda_num}.{filename}.md'
+    out_filename = f'content/sarga/{kanda_num}.{sarga_num}.md'
     print(f'Writing to {out_filename}')
     with open(out_filename, 'w') as f:
         f.write(template.substitute(url=url, jsonpath=json_filename))
