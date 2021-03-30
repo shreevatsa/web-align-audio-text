@@ -1,22 +1,48 @@
-<!DOCTYPE html>
-<meta charset="utf-8"/>
-<title>Rāmāyaṇa</title>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
+{{/* This is the template that will be used for the "sarga" list page. */}}
+{{ define "main" }}
 
+<h1>The Rāmāyaṇa, with audio and text</h1>
 
-{{ $prettyNames := (dict "Kanda_1_BK" "Kāṇḍa 1: Bāla-kāṇḍa"    "Kanda_2_AYK" "Kāṇḍa 2: Ayodhyā-kāṇḍa"    "Kanda_3_ARK" "Kāṇḍa 3: Araṇya-kāṇḍa"    "Kanda_4_KSK" "Kāṇḍa 4: Kiṣkindhā-kāṇḍa"    "Kanda_5_SK" "Kāṇḍa 5: Sundara-kāṇḍa"    "Kanda_6_YK" "Kāṇḍa 6: Yuddha-kāṇḍa") }}
+<p>This alignment between audio and text is the fantastic work of Avinash Varna
+    (see <a href="https://groups.google.com/g/sanskrit-programmers/c/uJygUmMSa84/m/hfGbIhrgBwAJ">here</a>),
+    but the ugliness of this website is (so far) entirely my own.</p>
 
-{{ $lastKandaNum := newScratch }}
+<style>
+    #sargaList {
+        display: grid;
+        /* This "30rem" is picked as wider than the largest item. */
+        grid-template-columns: repeat(auto-fill, minmax(30rem, 1fr));
+        column-gap: 1rem;
+        grid-auto-flow: row;
+    }
+    .sargaLink a {
+        text-decoration: none;
+    }
+</style>
 
+{{ $prettyNames := (dict "Kanda_1_BK"  "Kāṇḍa 1: Bāla-kāṇḍa"
+                         "Kanda_2_AYK" "Kāṇḍa 2: Ayodhyā-kāṇḍa"
+                         "Kanda_3_ARK" "Kāṇḍa 3: Araṇya-kāṇḍa"
+                         "Kanda_4_KSK" "Kāṇḍa 4: Kiṣkindhā-kāṇḍa"
+                         "Kanda_5_SK"  "Kāṇḍa 5: Sundara-kāṇḍa"
+                         "Kanda_6_YK"  "Kāṇḍa 6: Yuddha-kāṇḍa") }}
+
+<div id="sargaList">
+{{ $lastKandaNum := "" }}
 {{ range $fileInfo := (readDir "data/audio_alignment/ramayana/sentence_alignment/") }}
     {{ $kandaNum := replaceRE "^(Kanda_[1-6]_[A-Z]{1,2}K)-.*.json" "$1" $fileInfo.Name }}
     {{ if not (eq $kandaNum $lastKandaNum) }}
-        <h2>{{ index $prettyNames $kandaNum }} </h2>
+        </div><h2>{{ index $prettyNames $kandaNum }}</h2><div id="sargaList">
         {{ $lastKandaNum = $kandaNum }}
     {{ end }}
-    {{ $sargaName := replaceRE "^Kanda_([1-6])_[A-Z]{1,2}K-([0-9]{3})-(.*).json" "$1.$2: $3" $fileInfo.Name }}
+    {{ $sargaNum  := replaceRE "^Kanda_([1-6])_[A-Z]{1,2}K-([0-9]{3})-(.*).json" "$1.$2" $fileInfo.Name }}
+    {{ $sargaName := replaceRE "^Kanda_([1-6])_[A-Z]{1,2}K-([0-9]{3})-(.*).json" "$3" $fileInfo.Name }}
+    {{/* Replace trailing 0s, replace underscores with spaces (debatable), strip trailing spaces */}}
     {{ $sargaName = replaceRE "(.*)_0" "$1" $sargaName }}
-    {{ $sargaName = replaceRE "(.*)_$" "$1" $sargaName }}
-    {{ $sargaNum := replaceRE "^Kanda_([1-6])_[A-Z]{1,2}K-([0-9]{3})-.*.json" "$1.$2" $fileInfo.Name }}
-    <a href="{{ $.Site.BaseURL }}/sarga/{{ $sargaNum }}">{{ $sargaName }}</a><br>
+    {{ $sargaName = replace $sargaName "_" " " }}
+    {{ $sargaName = replaceRE "^ *(.*) *$" "$1" $sargaName }}
+    <span class="sargaLink"><a href="{{ $.Site.BaseURL }}/sarga/{{ $sargaNum }}">{{$sargaNum}}: {{ $sargaName }}</a></span>
+{{end}}
+</div>
+
 {{end}}
