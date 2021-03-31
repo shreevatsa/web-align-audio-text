@@ -1,10 +1,13 @@
+// // When the timer last ran.
+// let lastRan = new Date();
+
 // Keeping track of which line is highlighted.
 let highlighted = null;
 // Making this a function so that this crude styling can be changed later. :-)
 function highlight(text) {
-    if (highlighted) highlighted.style.fontWeight = '';
-    text.style.fontWeight = 'bold';
-    text.scrollIntoView({ block: "center"});
+    if (highlighted) highlighted.classList.remove('line-being-read');
+    text.classList.add('line-being-read');
+    text.scrollIntoView({ behavior: "smooth", block: "center" });
     highlighted = text;
 }
 
@@ -21,6 +24,9 @@ function highlight(text) {
     // Note: This event can fire several times a second, so keep this handler light.
     // https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/timeupdate_event
     document.getElementById('audio-ramayana').ontimeupdate = (event) => {
+        // // Don't run this more than every 100 ms.
+        // if (new Date() - lastRan < 100) return;
+        // lastRan = new Date();
         const whatTime = document.getElementById("audio-ramayana").currentTime;
         // Find the right text. For now, O(n) loop is fine; we have at most a few hundred verses in a sarga.
         let seenLine = null;

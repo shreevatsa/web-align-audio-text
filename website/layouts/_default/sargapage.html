@@ -1,7 +1,15 @@
 {{ define "main" }}
 
+{{ $title := replace (replaceRE ".json$" "" $.Params.ramayanaalignment) "_" " " }}
+
 <style>
+    #audio-and-text-container h1 {
+        text-align: center;
+    }
     #text-ramayana {
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 1rem;
         /* rtl (reverted to ltr inside) is a hack to get scrollbar on the left */
         direction: rtl;
         line-height: 1.2;
@@ -19,26 +27,40 @@
         /* Not too close to scrollbar */
         margin-left: 1em;
     }
+    .line-being-read {
+        font-weight: bold;
+        transition: all 0.3s ease-in-out;
+    }
+
+    audio {
+        display: block;
+        width: min(100%, 40rem);
+        margin-left: auto;
+        margin-right: auto;
+    }
 </style>
 
-<audio controls id="audio-ramayana" src="{{ .Params.ramayanaaudiourl }}">
-</audio>
+<div id="audio-and-text-container">
+    <h1>{{ $title }}</h1>
 
-{{ $alignmentPath := printf "data/audio_alignment/ramayana/sentence_alignment/%#s" $.Params.ramayanaalignment }}
-{{- /* $alignmentPath := replace $alignmentPath " " "%20" */ -}}
-{{- /* warnf "Path for (%v) of kind (%v) is (%#s)" $.Path $.Kind $alignmentPath */ -}}
+    <audio controls id="audio-ramayana" src="{{ .Params.ramayanaaudiourl }}"></audio>
 
-<div id="text-ramayana">
-    <div id="text-ramayana-inner"> 
-    {{- $dataJSON := getJSON $alignmentPath -}}
-    {{ range $fragment := (index $dataJSON "fragments") }}
-        {{- /* We assume there is just one line */ -}}
-        {{- $line := (index $fragment.lines 0) -}}
-        <p class="line-ramayana" begin="{{$fragment.begin}}">{{$line}}</p>
-    {{ end }}
+    {{ $alignmentPath := printf "data/audio_alignment/ramayana/sentence_alignment/%#s" $.Params.ramayanaalignment }}
+
+    <div id="text-ramayana">
+        <div id="text-ramayana-inner">
+        {{- $dataJSON := getJSON $alignmentPath -}}
+        {{ range $fragment := (index $dataJSON "fragments") }}
+            {{- /* We assume there is just one line */ -}}
+            {{- $line := (index $fragment.lines 0) -}}
+            <p class="line-ramayana" begin="{{$fragment.begin}}">{{$line}}</p>
+        {{ end }}
     </div>
 </div>
 
-<script src="{{ $.Site.BaseURL }}align.js"></script>
+</div>
+
+
+<script src="{{ "align.js" | relURL }}"></script>
 
 {{ end }}

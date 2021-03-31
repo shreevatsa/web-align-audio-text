@@ -41,7 +41,7 @@
     {{ $sargaName = replaceRE "(.*)_0" "$1" $sargaName }}
     {{ $sargaName = replace $sargaName "_" " " }}
     {{ $sargaName = replaceRE "^ *(.*) *$" "$1" $sargaName }}
-    <span class="sargaLink"><a href="{{ $.Site.BaseURL }}/sarga/{{ $sargaNum }}">{{$sargaNum}}: {{ $sargaName }}</a></span>
+    <span class="sargaLink"><a href="{{ printf "sarga/%s" $sargaNum | relURL }}">{{$sargaNum}}: {{ $sargaName }}</a></span>
 {{end}}
 </div>
 
