@@ -14,23 +14,23 @@ function highlight(text) {
 // The "main" of this script.
 {
     // Set up handlers for click on text
-    for (const line of document.getElementsByClassName('line-ramayana')) {
+    for (const line of document.getElementsByClassName('line-rame')) {
         const begin = line.getAttribute('begin');
         line.addEventListener('click', (e) => {
-            document.getElementById("audio-ramayana").currentTime = parseFloat(begin);
+            document.getElementById("rame-audio").currentTime = parseFloat(begin);
         });
     }
     // Set up handlers for time change in audio.
     // Note: This event can fire several times a second, so keep this handler light.
     // https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/timeupdate_event
-    document.getElementById('audio-ramayana').ontimeupdate = (event) => {
+    document.getElementById('rame-audio').ontimeupdate = (event) => {
         // // Don't run this more than every 100 ms.
         // if (new Date() - lastRan < 100) return;
         // lastRan = new Date();
-        const whatTime = document.getElementById("audio-ramayana").currentTime;
+        const whatTime = document.getElementById("rame-audio").currentTime;
         // Find the right text. For now, O(n) loop is fine; we have at most a few hundred verses in a sarga.
         let seenLine = null;
-        for (const text of document.getElementsByClassName('line-ramayana')) {
+        for (const text of document.getElementsByClassName('line-rame')) {
             const thisTextStart = parseFloat(text.getAttribute('begin'));
             if (seenLine == null || thisTextStart <= whatTime) {
                 seenLine = text;

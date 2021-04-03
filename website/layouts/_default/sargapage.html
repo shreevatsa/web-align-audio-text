@@ -1,12 +1,14 @@
 {{ define "main" }}
 
-{{ $title := replace (replaceRE ".json$" "" $.Params.ramayanaalignment) "_" " " }}
+{{ $title := replaceRE ".json$" "" $.Params.alignmentjson }}
+{{ $title = replace $title "_" " " }}
+{{ $title = replaceRE "[^/]*/[^/]*/(.*)" "$1" $title }}
 
 <style>
     #audio-and-text-container h1 {
         text-align: center;
     }
-    #text-ramayana {
+    #rame-text {
         margin-left: auto;
         margin-right: auto;
         margin-top: 1rem;
@@ -22,13 +24,13 @@
         /* https://stackoverflow.com/a/31315821 but TODO look for something more subtle: https://css-tricks.com/thats-just-how-i-scroll/ Example 3 */
         /* box-shadow: inset 0 -25px 50px -35px rgba(0, 0, 0, 1); */
     }
-    #text-ramayana-inner {
+    #rame-text-inner {
         direction: ltr;
         /* Not too close to scrollbar */
         margin-left: 1em;
     }
 
-    #text-ramayana-inner p {
+    #rame-text-inner p {
         transition: all 0.5s ease-in-out;
     }
 
@@ -47,17 +49,17 @@
 <div id="audio-and-text-container">
     <h1>{{ $title }}</h1>
 
-    <audio controls id="audio-ramayana" src="{{ .Params.ramayanaaudiourl }}"></audio>
+    <audio controls id="rame-audio" src="{{ .Params.alignmentaudio }}"></audio>
 
-    {{ $alignmentPath := printf "data/audio_alignment/ramayana/sentence_alignment/%#s" $.Params.ramayanaalignment }}
+    {{ $alignmentPath := printf "data/audio_alignment/ramayana/sentence_alignment/%#s" $.Params.alignmentjson }}
 
-    <div id="text-ramayana">
-        <div id="text-ramayana-inner">
+    <div id="rame-text">
+        <div id="rame-text-inner">
         {{- $dataJSON := getJSON $alignmentPath -}}
         {{ range $fragment := (index $dataJSON "fragments") }}
             {{- /* We assume there is just one line */ -}}
             {{- $line := (index $fragment.lines 0) -}}
-            <p class="line-ramayana" begin="{{$fragment.begin}}">{{$line}}</p>
+            <p class="line-rame" begin="{{$fragment.begin}}">{{$line}}</p>
         {{ end }}
     </div>
 </div>

@@ -1,0 +1,72 @@
+{{ define "main" }}
+
+{{ $title := replaceRE ".json$" "" $.Params.alignmentjson }}
+{{ $title = replace $title "_" " " }}
+{{ $title = replaceRE "[^/]*/[^/]*/(.*)" "$1" $title }}
+
+<style>
+    #audio-and-text-container h1 {
+        text-align: center;
+    }
+    #rame-text {
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 1rem;
+        /* rtl (reverted to ltr inside) is a hack to get scrollbar on the left */
+        direction: rtl;
+        line-height: 1.2;
+        /* Hack: 54px is max height of audio element, across Safari (31px), Firefox (40px) and Chrome, on my machine. 
+        But what we really want is probably (on sufficiently wide screens) the audio element off to the side, and scrolling normally. */
+        max-height: min(90vh, calc(100vh - 54px), 30rem);
+        background-color: lightgrey;
+        max-width: 30rem;
+        overflow-y: scroll;
+        /* https://stackoverflow.com/a/31315821 but TODO look for something more subtle: https://css-tricks.com/thats-just-how-i-scroll/ Example 3 */
+        /* box-shadow: inset 0 -25px 50px -35px rgba(0, 0, 0, 1); */
+    }
+    #rame-text-inner {
+        direction: ltr;
+        /* Not too close to scrollbar */
+        margin-left: 1em;
+    }
+
+    #rame-text-inner p {
+        transition: all 0.5s ease-in-out;
+    }
+
+    .line-being-read {
+        font-weight: bold;
+    }
+
+    audio {
+        display: block;
+        width: min(100%, 40rem);
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+
+<div id="audio-and-text-container">
+    <h1>{{ $title }}</h1>
+
+    <audio controls id="rame-audio" src="{{ .Params.alignmentaudio }}"></audio>
+
+    {{ $alignmentPath := printf "data/audio_alignment/%#s" $.Params.alignmentjson }}
+
+    <div id="rame-text">
+        <div id="rame-text-inner">
+        {{- $dataJSON := getJSON $alignmentPath -}}
+        {{ range $fragment := (index $dataJSON "fragments") }}
+            {{- /* We assume there is just one line */ -}}
+            {{- $line := (index $fragment.lines 0) -}}
+            <p class="line-rame" begin="{{$fragment.begin}}">{{$line}}</p>
+        {{ end }}
+    </div>
+</div>
+
+</div>
+
+
+<script src="{{ "align.js" | relURL }}"></script>
+
+{{ end }}

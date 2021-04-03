@@ -7,8 +7,8 @@ template = string.Template('''
 ---
 kind: "page"
 layout: "sargapage"
-ramayanaalignment: "$jsonpath"
-ramayanaaudiourl: "$url"
+alignmentjson: "$jsonpath"
+alignmentaudio: "$url"
 ---
 '''.strip())
 
@@ -20,7 +20,8 @@ if __name__ == '__main__':
     assert path.startswith('Kanda_'), path
     kanda_path = path[:len('Kanda_')+1]
     kanda_num = kanda_path[-1]
-    m = re.match(kanda_path +'_([A-Z]{2,3})-([0-9][0-9][0-9])-.*.json', json_filename)
+    m = re.match(
+        kanda_path + '_([A-Z]{2,3})-([0-9][0-9][0-9])-.*.json', json_filename)
     sarga_num = m.group(2)
     url_prefix = 'https://archive.org/download/Ramayana-recitation-Sriram-harisItArAmamUrti-Ghanapaati-v2'
     url = f'{url_prefix}/{kanda_path}/{path}.mp3'
