@@ -27,7 +27,7 @@ if __name__ == '__main__':
     path = path[path.find('Kanda_'):]
     kanda_path = path[path.find('Kanda_'): path.find('Kanda_') + len('Kanda_') + 1]
     kanda_num = kanda_path[-1]
-    m = re.match('ramayana/sentence_alignment/' + kanda_path + '_([A-Z]{2,3})-([0-9][0-9][0-9])-.*.json', json_path)
+    m = re.match('ramayana/word_alignment/' + kanda_path + '_([A-Z]{2,3})-([0-9][0-9][0-9])-.*.json', json_path)
     sarga_num = m.group(2)
     url_prefix = 'https://archive.org/download/Ramayana-recitation-Sriram-harisItArAmamUrti-Ghanapaati-v2'
     url = f'{url_prefix}/{kanda_path}/{path}.mp3'

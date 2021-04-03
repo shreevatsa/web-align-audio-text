@@ -12,7 +12,7 @@ alignmentaudio: "https://archive.org/download/meghadUta-mUlam-vedabhoomi.org/$pm
 EOF
 done
 
-for f in data/audio_alignment/ramayana/sentence_alignment/Kanda_*.json; do
+for f in data/audio_alignment/ramayana/word_alignment/Kanda_*.json; do
     echo $f
     echo $f | python3 generate.py
 done

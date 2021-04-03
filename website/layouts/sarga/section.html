@@ -29,7 +29,7 @@
 
 <div id="sargaList">
 {{ $lastKandaNum := "" }}
-{{ range $fileInfo := (readDir "data/audio_alignment/ramayana/sentence_alignment/") }}
+{{ range $fileInfo := (readDir "data/audio_alignment/ramayana/word_alignment/") }}
     {{ $kandaNum := replaceRE "^(Kanda_[1-6]_[A-Z]{1,2}K)-.*.json" "$1" $fileInfo.Name }}
     {{ if not (eq $kandaNum $lastKandaNum) }}
         </div><h2>{{ index $prettyNames $kandaNum }}</h2><div id="sargaList">

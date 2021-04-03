@@ -1,6 +1,6 @@
 ---
 kind: "page"
 layout: "ramepage"
-alignmentjson: "ramayana/sentence_alignment/Kanda_1_BK-001-Samksheparamayanam.json"
+alignmentjson: "ramayana/word_alignment/Kanda_1_BK-001-Samksheparamayanam.json"
 alignmentaudio: "https://archive.org/download/Ramayana-recitation-Sriram-harisItArAmamUrti-Ghanapaati-v2/Kanda_1/Kanda_1_BK-001-Samksheparamayanam.mp3"
 ---
