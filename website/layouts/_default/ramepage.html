@@ -55,17 +55,24 @@
 
     <div id="rame-text">
         <div id="rame-text-inner">
+            <p>
         {{- $dataJSON := getJSON $alignmentPath -}}
+        {{ $lastId := -1 }}
         {{ range $fragment := (index $dataJSON "fragments") }}
-            {{- /* We assume there is just one line */ -}}
+            {{- /* Parse `id` to get "s" to add optional linebreak before text in `lines` */ -}}
+            {{- $fragmentId := replaceRE "p[0-9]*s([0-9]*)w[0-9]*" "$1" $fragment.id -}}
+            {{ if (ne $fragmentId $lastId) }}
+                </p>
+                <p>
+                {{ $lastId = $fragmentId }}
+            {{ end }}
             {{- $line := (index $fragment.lines 0) -}}
-            <p class="line-rame" begin="{{$fragment.begin}}">{{$line}}</p>
+            <span class="line-rame" begin="{{$fragment.begin}}">{{$line}}</span>
         {{ end }}
+            </p>
+        </div>
     </div>
 </div>
-
-</div>
-
 
 <script src="{{ "align.js" | relURL }}"></script>
 
