@@ -27,7 +27,7 @@ function highlight(text) {
         // // Don't run this more than every 100 ms.
         // if (new Date() - lastRan < 100) return;
         // lastRan = new Date();
-        const whatTime = document.getElementById("rame-audio").currentTime;
+        const whatTime = parseFloat(document.getElementById("rame-audio").currentTime.toFixed(3));
         // Find the right text. For now, O(n) loop is fine; we have at most a few hundred verses in a sarga.
         let seenLine = null;
         for (const text of document.getElementsByClassName('line-rame')) {

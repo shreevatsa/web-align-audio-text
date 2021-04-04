@@ -8,6 +8,14 @@
     #audio-and-text-container h1 {
         text-align: center;
     }
+
+    audio {
+        display: block;
+        width: min(100%, 40rem);
+        margin-left: auto;
+        margin-right: auto;
+    }
+
     #rame-text {
         margin-left: auto;
         margin-right: auto;
@@ -38,11 +46,8 @@
         font-weight: bold;
     }
 
-    audio {
-        display: block;
-        width: min(100%, 40rem);
-        margin-left: auto;
-        margin-right: auto;
+    #navback {
+        text-align: center;
     }
 </style>
 
@@ -72,7 +77,9 @@
             </p>
         </div>
     </div>
+    <div id="navback"><p><a href="..">Up to list</a></p></div>
 </div>
+
 
 <script src="{{ "align.js" | relURL }}"></script>
 

@@ -1,0 +1,32 @@
+{{/* TODO: Merge with sarga.html. */}}
+{{ define "main" }}
+
+<h1>The Meghadūta, with audio and text</h1>
+
+<p>This alignment between audio and text is the fantastic work of Avinash Varna
+    (see <a href="https://groups.google.com/g/sanskrit-programmers/c/uJygUmMSa84/m/hfGbIhrgBwAJ">here</a>),
+    but the ugliness of this website is (so far) entirely my own.</p>
+
+<style>
+    #sargaList {
+        display: grid;
+    }
+    .sargaLink a {
+        text-decoration: none;
+    }
+</style>
+
+<div id="sargaList">
+{{ range $fileInfo := (readDir "data/audio_alignment/meghaduta/word_alignment/") }}
+    {{ $sargaNum  := replaceRE ".json$" "" $fileInfo.Name | lower }}
+    {{ $sargaName := replaceRE ".json$" "" $fileInfo.Name }}
+    {{ warnf "fileInfo.name is %s so sargaNum is %s and sargaName is %s" $fileInfo.Name $sargaNum $sargaName }}
+    <span class="sargaLink"><a href="{{ printf "meghaduta/%s" $sargaNum | relURL }}">{{ $sargaName }}</a></span>
+{{end}}
+</div>
+
+<div style="margin-top: 1rem">
+    <a href="..">Up</a>
+</div>
+
+{{end}}
