@@ -54,7 +54,7 @@
 <div id="audio-and-text-container">
     <h1>{{ $title }}</h1>
 
-    <audio controls id="rame-audio" src="{{ .Params.alignmentaudio }}"></audio>
+    <audio controls id="rame-audio" src="{{ .Params.alignmentaudio | relURL }}"></audio>
 
     {{ $alignmentPath := printf "data/audio_alignment/%#s" $.Params.alignmentjson }}
 
